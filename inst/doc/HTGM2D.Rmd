@@ -1,0 +1,114 @@
+---
+title: "Two Dimensional High Throughput GoMiner (HTGM2D)"
+author: Barry Zeeberg [aut, cre]
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Two Dimensional High Throughput GoMiner (HTGM2D)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style>
+body {
+text-align: justify;
+font-size: 16pt;
+font-family: Times;}
+</style>
+
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span style='font-size:16.0pt;font-family:"Times New Roman",serif;
+color:red'>Two Dimensional High Throughput GoMiner (HTGM2D)<o:p></o:p></span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span style='font-size:16.0pt;font-family:"Times New Roman",serif'><o:p>&nbsp;</o:p></span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span style='font-size:16.0pt;font-family:"Times New Roman",serif'><o:p>&nbsp;</o:p></span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span style='font-size:16.0pt;font-family:"Times New Roman",serif'>Barry
+Zeeberg<o:p></o:p></span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span style='font-size:16.0pt;font-family:"Times New Roman",serif'>barryz2013@gmail.com<o:p></o:p></span></b></p><br>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:16.0pt;
+font-family:"Times New Roman",serif'></p><br>
+
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span style='font-size:16.0pt;font-family:"Times New Roman",serif'>Dedication<o:p></o:p></span></b></p>
+
+This package is dedicated to the scientists, working in the health sciences of the United States of America, who one day this week without warning lost their jobs *en masse*, resulting in the most devastating threat to the well-being of the people of the world. My heart goes out to them and their families in the immediate moment. The long-term consequence for all of us is beyond our comprehension.
+
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span style='font-size:16.0pt;font-family:"Times New Roman",serif'>Motivation<o:p></o:p></span></b></p>
+
+
+‘Two Dimensional High Throughput GoMiner (HTGM2D)’ is the final package of the four CRAN packages that together comprise the GoMiner suite. The other three are  ‘minimalistGODB,’ ‘GoMiner,’ and ‘High Throughput GoMiner (HTGM)'.
+
+The relationships between the functions in this set of packages can be shown using the package 'foodwebWrapper'.
+
+![The calling functions are designated along the column on the left](Figure5.jpg){width=125%}
+The calling functions are designated along the column on the left
+<br><br>
+
+The Gene Ontology (GO) Consortium <https://geneontology.org/> organizes genes into hierarchical categories based on biological process (BP), molecular function (MF) and cellular component (CC, i.e., subcellular localization). Tools such as GoMiner (see Zeeberg, B.R., Feng, W., Wang, G. et al. (2003) <doi:10.1186/gb-2003-4-4-r28>) can leverage GO to perform ontological analysis of microarray and proteomics studies, typically generating a list of significant functional categories. Microarray studies are usually analyzed with BP, whereas proteomics researchers often prefer CC.
+
+To capture the benefit of both of those ontologies simultaneously, I developed a two-dimensional version of High-Throughput GoMiner (HTGM2D). I generate a 2D heat map whose axes are any two of BP, MF, or CC, and the value within a picture element of the heat map reflects the Jaccard metric p-value for the number of genes in common for the corresponding ontology pair.
+
+The visualization is saved using the Scalable Vector Graphics (SVG) technology, which provides a web-friendly vector image format that uses mathematical formulas to define shapes and colors, allowing for crisp, scalable graphics without loss of quality, unlike pixel-based images. SVG is also more flexible than other formats in accommodating the large images that often are required for displaying the HTGM2D heatmaps (without truncating the rather long category names).
+
+The heatmap has only 2 axes, so the identity of the genes are unfortunately 'integrated out of the equation.' Because the graphic for the heatmap is implemented in Scalable Vector Graphics (SVG) technology, it is relatively easy to hyperlink each picture element to the relevant list of genes. By clicking on the desired picture element, the user can recover the 'lost' genes.
+
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span style='font-size:16.0pt;font-family:"Times New Roman",serif'>Results<o:p></o:p></span></b></p>
+
+The list of genes that I will use here for proof of concept, referred to as 'cluster52' was derived from a published analysis of a large set of cancer cell lines (Zeeberg, B.R., Kohn, K.W., Kahn, A., Larionov, V., Weinstein, J.N., Reinhold, W., Pommier, Y. (2012) <doi/10.1371/journal.pone.0040062>) and was subsequently the subject of intensive research (Kohn, K.W., Zeeberg, B.R, Reinhold, W.C., Sunshine, M., Luna, A., Pommier, Y. (2012) <doi/10.1371/journal.pone.0035716>) because they were associated with categories like cell adhesion, which are key to understanding metastasis. The gene list is available in data/cluster52.RData . The GO database *GOGOA3* can be obtained from my package 'minimalistGODB' or downloaded from https://github.com/barryzee/GO.
+
+The HTGM2D study was invoked by
+```
+geneList<-cluster52
+ontologies<-c("biological_process","cellular_component")
+dir<-tempdir()
+HTGM2Ddriver(dir,geneList,ontologies,GOGOA3,enrichThresh=2,
+ countThresh=5,fdrThresh=0.10,nrand=100)
+```
+The individual GoMiner BP and CC heatmaps are shown in Figures 1 and 2, respectively. The color scale represents the false discovery rate (FDR) of the category, with bright red corresponding to the most significant FDR close to 0.00, and the light background color corresponding to the fdrThresh of 0.10. The significant categories are related to those expected for cell adhesion and metastasis.
+<br><br>
+![Figure 1. GoMiner BP heatmap for cluster52 gene list](Figure1.jpg){width=175%}
+Figure 1. GoMiner BP heatmap for cluster52 gene list
+<br><br>
+![Figure 2.  GoMiner CC heatmap for cluster52 gene list](Figure2.jpg){width=150%}
+Figure 2.  GoMiner CC heatmap for cluster52 gene list
+<br><br>
+
+The joint BP versus CC HTGM2D heatmap is shown in Figure 3. As in Figures 1 and 2, the significant categories are related to those expected for cell adhesion and metastasis.
+
+![Figure 3. HTGM2D BP versus CC heatmap (containing clickable hyperlinks to reveal hidden gene lists) for cluster52 gene list](Figure3.jpg){width=100%}
+Figure 3. HTGM2D BP versus CC heatmap (containing clickable hyperlinks to reveal hidden gene lists) for cluster52 gene list
+<br><br>
+Detailed comparison (Figure 4) of the GoMiner results (Figures 1 and 2) and the HTGM2D results (Figure 3) are consistent with one another ("OVERLAP"). Furthermore, HTGM2D can delineate some significant categories that are missed by GoMiner ("ONLY IN HTGM2D"). Considering the expense of bio-medical experimentation, it is important to retrieve as much valid information as possible in subsequent analysis.
+
+
+![Figure 4. Comparison of significant categories in HTGM2D versus GoMiner Analyses (containing clickable hyperlinks to reveal hidden gene lists) for cluster52 gene list](Figure4.jpg){width=125%}
+Figure 4. Comparison of significant categories in HTGM2D versus GoMiner Analyses for cluster52 gene list
+<br><br>
+
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span style='font-size:16.0pt;font-family:"Times New Roman",serif'>Conclusions<o:p></o:p></span></b></p>
+
+HTGM2D effectively provided a high-resolution display of the categorization of experimental data. The enhancement in the degree of resolution can be viewed as the difference between running SDS gel electrophoresis in only a single dimension, compared to SDS followed by isoelectric focusing in the second dimension. Future studies will explore the hypothesis that genes mapping to a given biological process/cellular component pair may sometimes be more tightly mutually co-expressed than genes mapping to a single biological process or cellular component category.
+
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span style='font-size:16.0pt;font-family:"Times New Roman",serif'>Epilogue<o:p></o:p></span></b></p>
+
+CRAN is a repository for software, and the vignettes are intended to demonstrate how to use the software. This is not the place to write a detailed scientific paper such as in the published literature of a given field. However, the fact that I have compared the results of GoMiner and HTM2D obligates a brief elaboration.
+
+First, the use of FDR values as a criterion is but one method for choosing which genes and categories to focus on. The published literature contains other methods, put forth by professional statisticians.
+
+Second, having decided on using FDR values, I should point out that the comparisons given in Figure 4 are somewhat arbitrary. Although I have picked reasonable FDR threshold criteria, somewhat different criteria might have been chosen, and the results in Figure 4 would be somewhat different.
+
+Third, the idea behind using FDR as a criterion is based on the hypothesis that a randomly chosen subset of genes is in fact random. But the genes in the genome are all part of the same overall integrated system, and as a result of evolution this is a highly specialized set. Not only does each gene have its own chemistry, biochemistry, and function(s), but it also is part of a network. It must play nicely with around 20,000 other genes, and not arbitrarily interfere with what they are doing. So the hypothesis of random chosen genes being functionally random is probably only approximately true. Quite possibly, a hypothetical truly random set of genes (which does not really exist) would show less correlation than the set we (mistakenly) take as being random. It is possible that it might make sense to use a higher FDR threshold than I have selected, to compensate for the degree of non-randomness in the supposedly random set.
+
+Nevertheless, GoMiner and similar programs have been used for around 20 years by countless researchers in countless published papers, and the results have been useful for the characterization of normal and disease states across many organisms and many organs.
