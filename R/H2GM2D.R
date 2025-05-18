@@ -1,12 +1,15 @@
 #' HTGM2Ddriver
 #'
 #' @import minimalistGODB
+#' @import randomGODB
+#' @import HGNChelper
 #' @import GoMiner
 #' @import HTGM
 #' @import grDevices
 #' @import stats
 #' @importFrom gplots heatmap.2
 #' @import jaccard
+#' @import vprint
 #'
 #' @description driver to invoke GoMiner and HTGM2D, and compare the results
 #'
@@ -16,32 +19,37 @@
 #' @param GOGOA3 return value of subsetGOGOA() 
 #' @param enrichThresh  numerical acceptance threshold for enrichment passed to GoMiner
 #' @param countThresh numerical acceptance threshold for gene count passed to GoMiner
-#' @param fdrThresh numerical acceptance threshold for fdr passed to GoMiner
-#' @param nrand integer number of randomizations passed to GoMiner
+#' @param pvalThresh numerical acceptance threshold for pval
+#' @param fdrThresh numerical acceptance threshold for fdr
+#' @param nrand numeric number of randomizations to compute FDR
+#' @param mn integer param passed to trimGOGOA3, min size threshold for a category
+#' @param mx integer param passed to trimGOGOA3, max size threshold for a category
+#' @param opt integer 0:1 parameter used to select randomization method
+#' @param verbose integer vector representing classes
 #'
 #' @examples
 #' \dontrun{
-#' # this example takes too long to run, and
 #' # GOGOA3.RData is too large to include in the R package
 #' # so I need to load it from a file that is not in the package.
 #' # Since this is in a file in my own file system, I could not
 #' # include this as a regular example in the package.
-#' # This example is given in full detail in the package vignette.
-#' # You can generate GOGOA3.RData using the package 'minimalistGODB'
-#' # or you can retrieve it from https://github.com/barryzee/GO
+#' # you can generate it using the package 'minimalistGODB'
+#' # or you can retrieve it from https://github.com/barryzee/GO/tree/main/databases
+#' load("/Users/barryzeeberg/personal/GODB_RDATA/goa_human/GOGOA3_goa_human.RData")
 
-#' # load("~/GODB_RDATA/GOGOA3.RData")
 #' geneList<-cluster52
 #' ontologies<-c("biological_process","cellular_component")
 #' dir<-tempdir()
-#' HTGM2Ddriver(dir,geneList,ontologies,GOGOA3,enrichThresh=2,countThresh=5,fdrThresh=0.10,nrand=100)
+#' HTGM2Ddriver(dir,geneList,ontologies,GOGOA3,enrichThresh=2,
+#'  countThresh=5,pvalThresh=0.10,fdrThresh=0.10,nrand=100,mn=2,mx=2000)
 #' }
 #' 
 #' @return returns no value, but saves hyperlinked SVG heatmap files to a results directory
 #' 
 #' @export
 HTGM2Ddriver<-
-  function(dir,geneList,ontologies,GOGOA3,enrichThresh=2,countThresh=5,fdrThresh=0.10,nrand=100) {
+  function(dir,geneList,ontologies,GOGOA3,enrichThresh=2,countThresh=5,
+        pvalThresh=0.10,fdrThresh=0.10,nrand=100,mn,mx,opt=0,verbose=1) {
     stamp<-gsub(":","_",format(Sys.time(), "%a_%b_%d_%Y_%X"))
     title<-"HTGM2Dresults"
     subd<-sprintf("%s/%s_%s",dir,title,stamp)
@@ -50,11 +58,19 @@ HTGM2Ddriver<-
     # first run regular GoMiner as basis for comparison later
     l<-list()
     for(ontology in ontologies)
-      l[[ontology]]<-GoMiner(title=ontology,subd,geneList,GOGOA3,ontology,enrichThresh,countThresh,fdrThresh,nrand)
+      l[[ontology]]<-GoMiner(title=ontology,subd,geneList,GOGOA3,ontology,enrichThresh,
+          countThresh,pvalThresh,fdrThresh,nrand,mn,mx,opt,verbose)
     #x_l<-l
     #save(x_l,file="data/x_l.RData")
     
     # next run HTGM2D
+
+    pp<-preprocessDB(geneList,GOGOA3,ontology,mn,mx,thresh=.5,verbose=1)
+    vprint(-1,verbose,c("names pp",names(pp)))
+    geneList<-pp$sampleList
+    GOGOA3<-pp$GOGOA3
+    vprint(-1,verbose,"geneListDistHitters after preprocessDB")
+    
     mat<-HTGM2D(subd,geneList,ontologies,GOGOA3)
     #x_mat<-mat
     #save(x_mat,file="data/x_mat.RData")
@@ -126,16 +142,14 @@ compareGoMinerHTGM2D<-
 #' 
 #' @examples
 #' \dontrun{
-#' # this example takes too long to run, and
 #' # GOGOA3.RData is too large to include in the R package
 #' # so I need to load it from a file that is not in the package.
 #' # Since this is in a file in my own file system, I could not
 #' # include this as a regular example in the package.
-#' # This example is given in full detail in the package vignette.
-#' # You can generate GOGOA3.RData using the package 'minimalistGODB'
-#' # or you can retrieve it from https://github.com/barryzee/GO
+#' # you can generate it using the package 'minimalistGODB'
+#' # or you can retrieve it from https://github.com/barryzee/GO/tree/main/databases
+#' load("/Users/barryzeeberg/personal/GODB_RDATA/goa_human/GOGOA3_goa_human.RData")
 
-#' # load("~/GODB_RDATA/GOGOA3.RData")
 #' subd<-tempdir()
 #' geneList<-cluster52
 #' ontologies<-c("biological_process","cellular_component")
@@ -157,7 +171,8 @@ HTGM2D<-
     mat<-Jaccard(dir,m1,m2)
     #x_jmat<-mat
     #save(x_jmat,file="data/x_jmat.RData")
-    jHeatMap<-JaccardHeatMap(dir,mat)
+    if(nrow(mat)>1)
+      jHeatMap<-JaccardHeatMap(dir,mat)
     return(mat)
   }
 

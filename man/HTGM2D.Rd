@@ -23,15 +23,13 @@ run 2D version of GoMiner
 }
 \examples{
 \dontrun{
-# this example takes too long to run, and
 # GOGOA3.RData is too large to include in the R package
 # so I need to load it from a file that is not in the package.
 # Since this is in a file in my own file system, I could not
 # include this as a regular example in the package.
-# This example is given in full detail in the package vignette.
-# You can generate GOGOA3.RData using the package 'minimalistGODB'
-# or you can retrieve it from https://github.com/barryzee/GO
-# load("~/GODB_RDATA/GOGOA3.RData")
+# you can generate it using the package 'minimalistGODB'
+# or you can retrieve it from https://github.com/barryzee/GO/tree/main/databases
+load("/Users/barryzeeberg/personal/GODB_RDATA/goa_human/GOGOA3_goa_human.RData")
 subd<-tempdir()
 geneList<-cluster52
 ontologies<-c("biological_process","cellular_component")

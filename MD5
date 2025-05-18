@@ -1,6 +1,6 @@
-afc0b4d5567de8042efa6931e4bb5644 *DESCRIPTION
-735aac6b20e7fc12cecea6a996acaa6a *NAMESPACE
-148d5a38adb9102d8503583703be9bc0 *R/H2GM2D.R
+eabc9cbb05cccdb7e1eaf315a6b8fcb8 *DESCRIPTION
+afad190d1655ab8889c5d90d8bd8fe7a *NAMESPACE
+84f76f2b1f7d12d3c77be73c584b675e *R/H2GM2D.R
 dcb8736837eb4c28ef6a26c68f222244 *build/vignette.rds
 2819f6ba11b46c4e0df5e0ccce9c9f47 *data/GOGOA3small.RData
 1687399ccb03f91491b9522bdbcd6e94 *data/Housekeeping_Genes.RData
@@ -11,10 +11,10 @@ f058a1197845db17b0a116730db17538 *data/x_m1.RData
 8c8b451ecc7a5d52f3d610a42ea8a21c *data/x_m2.RData
 7f80c50f2d20efadfc6a6d34856ef6b9 *data/x_mat.RData
 1166c86277a8b91c17e633ad9484afbe *inst/doc/HTGM2D.Rmd
-23c7e78b002ace56b5116a02b915d5a4 *inst/doc/HTGM2D.html
+9b5ea4489fa3d6c5a041a51f23064a20 *inst/doc/HTGM2D.html
 98342816000a600789a6ae107fd21f3c *man/GOGOA3small.Rd
-173f4319ba8b6bae279a01d5225f486d *man/HTGM2D.Rd
-246b71af6cc738e47dd64ce867209885 *man/HTGM2Ddriver.Rd
+7fed81a91e7a5ba398b6d2a67c19f76b *man/HTGM2D.Rd
+ae3bb2851358b428f292569250a3f356 *man/HTGM2Ddriver.Rd
 78fa6b18ecffac7f4952666a707a2ec0 *man/Housekeeping_Genes.Rd
 cb12ce1f2e9fe9150a3176504a2207c8 *man/Jaccard.Rd
 f9bb3f188e22f6071621dda8c619d8e0 *man/JaccardHeatMap.Rd

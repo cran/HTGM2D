@@ -11,8 +11,13 @@ HTGM2Ddriver(
   GOGOA3,
   enrichThresh = 2,
   countThresh = 5,
+  pvalThresh = 0.1,
   fdrThresh = 0.1,
-  nrand = 100
+  nrand = 100,
+  mn,
+  mx,
+  opt = 0,
+  verbose = 1
 )
 }
 \arguments{
@@ -28,9 +33,19 @@ HTGM2Ddriver(
 
 \item{countThresh}{numerical acceptance threshold for gene count passed to GoMiner}
 
-\item{fdrThresh}{numerical acceptance threshold for fdr passed to GoMiner}
+\item{pvalThresh}{numerical acceptance threshold for pval}
 
-\item{nrand}{integer number of randomizations passed to GoMiner}
+\item{fdrThresh}{numerical acceptance threshold for fdr}
+
+\item{nrand}{numeric number of randomizations to compute FDR}
+
+\item{mn}{integer param passed to trimGOGOA3, min size threshold for a category}
+
+\item{mx}{integer param passed to trimGOGOA3, max size threshold for a category}
+
+\item{opt}{integer 0:1 parameter used to select randomization method}
+
+\item{verbose}{integer vector representing classes}
 }
 \value{
 returns no value, but saves hyperlinked SVG heatmap files to a results directory
@@ -40,19 +55,18 @@ driver to invoke GoMiner and HTGM2D, and compare the results
 }
 \examples{
 \dontrun{
-# this example takes too long to run, and
 # GOGOA3.RData is too large to include in the R package
 # so I need to load it from a file that is not in the package.
 # Since this is in a file in my own file system, I could not
 # include this as a regular example in the package.
-# This example is given in full detail in the package vignette.
-# You can generate GOGOA3.RData using the package 'minimalistGODB'
-# or you can retrieve it from https://github.com/barryzee/GO
-# load("~/GODB_RDATA/GOGOA3.RData")
+# you can generate it using the package 'minimalistGODB'
+# or you can retrieve it from https://github.com/barryzee/GO/tree/main/databases
+load("/Users/barryzeeberg/personal/GODB_RDATA/goa_human/GOGOA3_goa_human.RData")
 geneList<-cluster52
 ontologies<-c("biological_process","cellular_component")
 dir<-tempdir()
-HTGM2Ddriver(dir,geneList,ontologies,GOGOA3,enrichThresh=2,countThresh=5,fdrThresh=0.10,nrand=100)
+HTGM2Ddriver(dir,geneList,ontologies,GOGOA3,enrichThresh=2,
+ countThresh=5,pvalThresh=0.10,fdrThresh=0.10,nrand=100,mn=2,mx=2000)
 }
 
 }

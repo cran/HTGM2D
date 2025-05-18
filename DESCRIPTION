@@ -1,6 +1,6 @@
 Package: HTGM2D
-Version: 1.0
-Date: 2025-04-03
+Version: 1.1
+Date: 2025-05-18
 Title: Two Dimensional High Throughput 'GoMiner'
 Authors@R: c(
           person("Barry", "Zeeberg", email = "barryz2013@gmail.com",
@@ -9,7 +9,7 @@ Maintainer: Barry Zeeberg <barryz2013@gmail.com>
 Author: Barry Zeeberg [aut, cre]
 Depends: R (>= 4.2.0)
 Imports: minimalistGODB, GoMiner, HTGM, grDevices, stats, gplots,
-        jaccard
+        jaccard, vprint, randomGODB, HGNChelper
 LazyData: true
 LazyDataCompression: xz
 Description: The Gene Ontology (GO) Consortium <https://geneontology.org/> organizes genes
@@ -30,6 +30,6 @@ Suggests: knitr, rmarkdown, testthat (>= 3.0.0)
 RoxygenNote: 7.3.2
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2025-04-03 19:55:55 UTC; barryzeeberg
+Packaged: 2025-05-18 20:03:40 UTC; barryzeeberg
 Repository: CRAN
-Date/Publication: 2025-04-07 16:10:08 UTC
+Date/Publication: 2025-05-18 20:30:02 UTC
