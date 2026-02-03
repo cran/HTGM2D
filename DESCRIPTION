@@ -1,6 +1,6 @@
 Package: HTGM2D
-Version: 1.1
-Date: 2025-05-18
+Version: 1.1.1
+Date: 2026-02-03
 Title: Two Dimensional High Throughput 'GoMiner'
 Authors@R: c(
           person("Barry", "Zeeberg", email = "barryz2013@gmail.com",
@@ -27,9 +27,9 @@ License: GPL (>= 2)
 Encoding: UTF-8
 VignetteBuilder: knitr
 Suggests: knitr, rmarkdown, testthat (>= 3.0.0)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2025-05-18 20:03:40 UTC; barryzeeberg
+Packaged: 2026-02-03 16:12:34 UTC; barryzeeberg
 Repository: CRAN
-Date/Publication: 2025-05-18 20:30:02 UTC
+Date/Publication: 2026-02-03 23:00:32 UTC
